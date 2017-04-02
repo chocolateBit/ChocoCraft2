@@ -4,6 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import uk.co.haxyshideout.chococraft2.config.Constants;
 import uk.co.haxyshideout.chococraft2.entities.DefaultNames;
 import uk.co.haxyshideout.chococraft2.entities.EntityChocobo;
@@ -16,32 +17,46 @@ import java.util.Random;
  */
 public class DebugCommand extends CommandBase {
 
-	@Override
+	// <3 @Override
 	public String getCommandName() {
-		return "chocodebug";
+		return getName();
 	}
 
-	@Override
+	// <3 @Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/"+getCommandName();
+		return "/"+getName();
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+	{
 		DebugHelper.langCheck(Constants.MODID);
 
 		EntityChocobo chocobo = new EntityChocobo(sender.getEntityWorld());
 		EntityPlayerMP player = (EntityPlayerMP) sender;
 		chocobo.setPosition(player.posX, player.posY, player.posZ);
-		player.worldObj.spawnEntityInWorld(chocobo);
+		player.getEntityWorld().spawnEntity(chocobo);// <3 spawnEntityInWorld(chocobo);
 //		chocobo.setTamed(true);
 //		chocobo.setOwnerId(((EntityPlayerMP) sender).getUniqueID().toString());
 		chocobo.setSaddled(false);
 		chocobo.setCustomNameTag(DefaultNames.getRandomName(chocobo.isMale()));
-		chocobo.setColor(EntityChocobo.ChocoboColor.values()[new Random().nextInt(EntityChocobo.ChocoboColor.values().length)]);
+		
+		EntityChocobo.ChocoboColor chocoColors[] = EntityChocobo.ChocoboColor.values();
+		chocobo.setColor(chocoColors[new Random().nextInt(chocoColors.length)]);
 
 //		ChocopediaGui gui = new ChocopediaGui(chocobo);
 //		Minecraft.getMinecraft().displayGuiScreen(gui);
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "chocodebug";
+	}
+
+	@Override
+	public String getUsage(ICommandSender sender) {
+		// TODO Auto-generated method stub
+		return "/"+getName();
 	}
 }

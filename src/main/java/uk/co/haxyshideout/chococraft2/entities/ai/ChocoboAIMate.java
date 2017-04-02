@@ -30,7 +30,7 @@ public class ChocoboAIMate extends EntityAIBase
 	public ChocoboAIMate(EntityChocobo animal, double speedIn)
 	{
 		this.theAnimal = animal;
-		this.theWorld = animal.worldObj;
+		this.theWorld = animal.world;
 		this.moveSpeed = speedIn;
 		this.setMutexBits(3);
 	}
@@ -87,7 +87,6 @@ public class ChocoboAIMate extends EntityAIBase
 	 * Loops through nearby animals and finds another animal of the same type that can be mated with. Returns the first
 	 * valid mate found.
 	 */
-	@SuppressWarnings("WhileLoopReplaceableByForEach")
 	private EntityChocobo getNearbyMate()
 	{
 		float f = 8.0F;
@@ -137,7 +136,7 @@ public class ChocoboAIMate extends EntityAIBase
 
 			if (entityplayer != null)
 			{
-				entityplayer.triggerAchievement(StatList.animalsBredStat);
+				entityplayer.addStat(StatList.ANIMALS_BRED);
 			}
 
 			this.theAnimal.setGrowingAge(6000);
@@ -146,7 +145,7 @@ public class ChocoboAIMate extends EntityAIBase
 			this.targetMate.resetInLove();
 			entityageable.setGrowingAge(-24000);
 			entityageable.setLocationAndAngles(this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, 0.0F, 0.0F);
-			this.theWorld.spawnEntityInWorld(entityageable);
+			this.theWorld.spawnEntity(entityageable);
 			Random random = this.theAnimal.getRNG();
 
 			for (int i = 0; i < 7; ++i)
@@ -157,9 +156,9 @@ public class ChocoboAIMate extends EntityAIBase
 				this.theWorld.spawnParticle(EnumParticleTypes.HEART, this.theAnimal.posX + (double)(random.nextFloat() * this.theAnimal.width * 2.0F) - (double)this.theAnimal.width, this.theAnimal.posY + 0.5D + (double)(random.nextFloat() * this.theAnimal.height), this.theAnimal.posZ + (double)(random.nextFloat() * this.theAnimal.width * 2.0F) - (double)this.theAnimal.width, d0, d1, d2);
 			}
 
-			if (this.theWorld.getGameRules().getGameRuleBooleanValue("doMobLoot"))
+			if (this.theWorld.getGameRules().getBoolean("doMobLoot"))
 			{
-				this.theWorld.spawnEntityInWorld(new EntityXPOrb(this.theWorld, this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, random.nextInt(7) + 1));
+				this.theWorld.spawnEntity(new EntityXPOrb(this.theWorld, this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, random.nextInt(7) + 1));
 			}
 		}
 	}

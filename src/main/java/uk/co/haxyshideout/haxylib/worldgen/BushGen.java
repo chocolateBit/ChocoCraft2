@@ -1,11 +1,11 @@
 package uk.co.haxyshideout.haxylib.worldgen;
 
+import java.util.Random;
+
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 /**
  * Created by clienthax on 2/6/2015.
@@ -32,7 +32,7 @@ public class BushGen {
 		{
 			BlockPos blockPos = position.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-			if (worldIn.isAirBlock(blockPos) && (!worldIn.provider.getHasNoSky() || blockPos.getY() < 255) && this.flower.canBlockStay(worldIn, blockPos, this.blockState))
+			if (worldIn.isAirBlock(blockPos) && (!worldIn.provider.hasNoSky() || blockPos.getY() < 255) && this.flower.canBlockStay(worldIn, blockPos, this.blockState))
 			{
 				worldIn.setBlockState(blockPos, this.blockState, 2);
 			}

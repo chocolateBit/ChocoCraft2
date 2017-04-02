@@ -1,5 +1,9 @@
 package uk.co.haxyshideout.chococraft2.entities;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -11,7 +15,15 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import uk.co.haxyshideout.chococraft2.ChocoCraft2;
 import uk.co.haxyshideout.chococraft2.config.Additions;
@@ -20,50 +32,56 @@ import uk.co.haxyshideout.chococraft2.entities.EntityChocobo.ChocoboColor;
 
 public class EntityBabyChocobo extends EntityAnimal
 {
-    private int ticksExisted;
+	private static final DataParameter<Byte> dataWatcherVariant = EntityDataManager.<Byte> createKey(EntityBabyChocobo.class, DataSerializers.BYTE);
+	
+	private int ticksExisted;
+	public EntityChocobo parent1;
+	public EntityChocobo parent2;
 
 	public EntityBabyChocobo(World worldIn)
 	{
 		super(worldIn);
 		this.setSize(0.5f, 0.5f);
-		this.tasks.addTask(2, new EntityAIWander(this, this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue()));
+		this.tasks.addTask(2, new EntityAIWander(this, this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));
 		this.tasks.addTask(3, new EntityAISwimming(this));
 		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(5, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, true));
 	}
-
+	
 	@Override
 	public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        this.ticksExisted++;
-        
-        if(this.ticksExisted >= ChocoCraft2.instance.getConfig().getTicksToAdult() && !this.worldObj.isRemote)
-        {
-	        growUp();
-        }
-    }
+	{
+		super.onLivingUpdate();
+		this.ticksExisted++;
+		//System.out.println(this.ticksExisted);
 
-	private void growUp() {
+		if (this.ticksExisted >= ChocoCraft2.instance.getConfig().getTicksToAdult() && !this.world.isRemote)
+		{
+			growUp();
+		}
+	}
+
+	private void growUp()
+	{
 		this.setDead();
-		EntityChocobo chocobo = new EntityChocobo(this.worldObj);
+		EntityChocobo chocobo = new EntityChocobo(this.world);
 		chocobo.setColor(this.getChocoboColor());
 		chocobo.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-		this.worldObj.spawnEntityInWorld(chocobo);
+		this.world.spawnEntity(chocobo);
 	}
 
 	@Override
-	public boolean interact(EntityPlayer player)
+	public boolean processInteract(EntityPlayer player, EnumHand hand)
 	{
-		if (worldObj.isRemote)// return if client
+		if (world.isRemote)// return if client
 			return false;
 
-		if (player.getHeldItem() == null)// Make sure the player is holding something for the following checks
+		if (player.getHeldItem(hand) == null)// Make sure the player is holding something for the following checks
 			return false;
 
-		if (player.getHeldItem().getItem() == Additions.gysahlCakeItem)
+		if (player.getHeldItem(hand).getItem() == Additions.gysahlCakeItem)
 		{
 			this.consumeItemFromStack(player, player.inventory.getCurrentItem());
 			growUp();
@@ -71,7 +89,7 @@ public class EntityBabyChocobo extends EntityAnimal
 
 		return true;
 	}
-	
+
 	@Override
 	public EntityAgeable createChild(EntityAgeable ageable)
 	{
@@ -80,9 +98,9 @@ public class EntityBabyChocobo extends EntityAnimal
 
 	public void setColor(ChocoboColor color)
 	{
-		dataWatcher.updateObject(Constants.dataWatcherVariant, (byte) color.ordinal());
+		dataManager.set(dataWatcherVariant, Byte.valueOf((byte)color.ordinal()) );
 	}
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tagCompound)
 	{
@@ -103,7 +121,7 @@ public class EntityBabyChocobo extends EntityAnimal
 		super.entityInit();
 
 		// corresponding to enum.ordinal
-		this.dataWatcher.addObject(Constants.dataWatcherVariant, (byte) 0);
+		this.dataManager.register(dataWatcherVariant, Byte.valueOf((byte)0));
 	}
 
 	public boolean isTamed()
@@ -118,26 +136,26 @@ public class EntityBabyChocobo extends EntityAnimal
 
 	public ChocoboColor getChocoboColor()
 	{
-		return ChocoboColor.values()[dataWatcher.getWatchableObjectByte(Constants.dataWatcherVariant)];
+		return ChocoboColor.values()[dataManager.get(dataWatcherVariant)];
 	}
 
 	@Override
-	protected String getDeathSound()
+	protected SoundEvent getDeathSound()
 	{
-		return "chococraft2:choco_kweh";
+		return SoundEvent.REGISTRY.getObject(new ResourceLocation(Constants.MODID, "choco_kweh"));
 	}
 
 	@Override
-	protected String getHurtSound()
+	protected SoundEvent getHurtSound()
 	{
-		return "chococraft2:choco_kweh";
+		return SoundEvent.REGISTRY.getObject(new ResourceLocation(Constants.MODID, "choco_kweh"));
 	}
 
 	@Override
-	protected String getLivingSound()
+	protected SoundEvent getAmbientSound()
 	{
 		if (rand.nextInt(4) == 0)
-			return "chococraft2:choco_kweh";
+			return SoundEvent.REGISTRY.getObject(new ResourceLocation(Constants.MODID, "choco_kweh"));
 
 		return null;
 	}

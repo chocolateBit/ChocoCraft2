@@ -13,20 +13,28 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.potion.PotionType;
+import net.minecraft.world.biome.Biome;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.commons.io.FileUtils;
 import uk.co.haxyshideout.chococraft2.entities.ChocoboAbilityInfo;
+import uk.co.haxyshideout.haxylib.items.ModItemFood;
+import org.lwjgl.input.Mouse;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * Created by clienthax on 13/4/2015.
@@ -122,13 +130,16 @@ public class ChococraftConfig
 		}
 	}
 
-	public List<BiomeGenBase> getSpawnBiomes() {
-		List<BiomeGenBase> spawnBiomes = Lists.newArrayListWithCapacity(normalSpawnBiomeNames.size());
-		for(BiomeGenBase biomeGenBase : BiomeGenBase.getBiomeGenArray()) {
-			if(biomeGenBase != null && normalSpawnBiomeNames.contains(biomeGenBase.biomeName)) {
-				spawnBiomes.add(biomeGenBase);
+	public List<Biome> getSpawnBiomes() {
+		List<Biome> spawnBiomes = Lists.newArrayListWithCapacity(normalSpawnBiomeNames.size());
+		Iterator<Biome> biomeItr = Biome.REGISTRY.iterator();
+		while(biomeItr.hasNext()) {
+			Biome biome = biomeItr.next();
+			if(normalSpawnBiomeNames.contains(biome.getBiomeName())) {
+				spawnBiomes.add(biome);
 			}
 		}
+		
 		return spawnBiomes;
 	}
 
@@ -143,7 +154,8 @@ public class ChococraftConfig
 		loadAbilityForColout(new ChocoboAbilityInfo(GOLD).setSpeeds(50, 20, 55).setMaxHP(50).setStepHeight(2, 0.5f).setCanWalkOnWater(true).setCanClimb(true).setCanFly(true).setImmuneToFire(true), abilityNode.getNode("GOLD"));// TODO needs particles
 		loadAbilityForColout(new ChocoboAbilityInfo(PINK).setSpeeds(55, 25, 60).setMaxHP(50).setStepHeight(2, 0.5f).setCanClimb(true).setCanWalkOnWater(true).setCanFly(true), abilityNode.getNode("PINK"));
 		loadAbilityForColout(new ChocoboAbilityInfo(RED).setSpeeds(55, 25, 60).setMaxHP(50).setStepHeight(2, 0.5f).setCanClimb(true).setCanWalkOnWater(true).setCanFly(true), abilityNode.getNode("RED"));
-		loadAbilityForColout(new ChocoboAbilityInfo(PURPLE).setSpeeds(40, 10, 55).setMaxHP(50).setStepHeight(1, 0.5f).setCanClimb(true).setCanFly(true).setImmuneToFire(true).addRiderAbility(new PotionEffect(12, 100, -1, true, false)), abilityNode.getNode("PURPLE"));
+		// <3 loadAbilityForColout(new ChocoboAbilityInfo(PURPLE).setSpeeds(40, 10, 55).setMaxHP(50).setStepHeight(1, 0.5f).setCanClimb(true).setCanFly(true).setImmuneToFire(true).addRiderAbility(new PotionEffect(Potion.getPotionById(PotionType.getID(PotionTypes.fire_resistance)), 100, -1, true, false)), abilityNode.getNode("PURPLE"));
+		loadAbilityForColout(new ChocoboAbilityInfo(PURPLE).setSpeeds(40, 10, 55).setMaxHP(50).setStepHeight(1, 0.5f).setCanClimb(true).setCanFly(true).setImmuneToFire(true).addRiderAbility(new PotionEffect(MobEffects.FIRE_RESISTANCE, 30, 0)), abilityNode.getNode("PURPLE"));
 	}
 
 	private void loadAbilityForColout(ChocoboAbilityInfo abilityInfo, CommentedConfigurationNode node) {

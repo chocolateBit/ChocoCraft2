@@ -19,7 +19,7 @@ public class RecipeHelper {
 				" Y ",
 				" Y ",
 				'X', craftingMaterial,
-				'Y', Items.stick
+				'Y', Items.STICK
 		);
 	}
 
@@ -31,7 +31,7 @@ public class RecipeHelper {
 				"XY ",
 				" Y ",
 				'X', craftingMaterial,
-				'Y', Items.stick
+				'Y', Items.STICK
 		);
 	}
 
@@ -43,7 +43,7 @@ public class RecipeHelper {
 				" Y ",
 				" Y ",
 				'X', craftingMaterial,
-				'Y', Items.stick
+				'Y', Items.STICK
 		);
 	}
 
@@ -55,7 +55,7 @@ public class RecipeHelper {
 				" Y ",
 				" Y ",
 				'X', craftingMaterial,
-				'Y', Items.stick
+				'Y', Items.STICK
 		);
 	}
 
@@ -67,7 +67,7 @@ public class RecipeHelper {
 				" X ",
 				" Y ",
 				'X', craftingMaterial,
-				'Y', Items.stick
+				'Y', Items.STICK
 		);
 	}
 

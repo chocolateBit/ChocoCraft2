@@ -23,7 +23,7 @@ public class ChocoboAIHealInPen extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
-		for(IBlockState cauldronState : WorldHelper.getBlockstatesInRangeOfEntity(Blocks.cauldron, chocobo, 5, 0)) {
+		for(IBlockState cauldronState : WorldHelper.getBlockstatesInRangeOfEntity(Blocks.CAULDRON, chocobo, 5, 0)) {
 			if((Integer) cauldronState.getValue(BlockCauldron.LEVEL) == 3) {//cauldron is full
 				chocobo.heal(RandomHelper.getRandomInt(3) + 1);
 			}
@@ -32,8 +32,8 @@ public class ChocoboAIHealInPen extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {//check the task is run only every 40 ticks and that the chocobo is standing on straw
-		if(chocobo.worldObj.getWorldTime() % 40 == 0 && chocobo.getHealth() != chocobo.getMaxHealth())
-			if(chocobo.worldObj.getBlockState(chocobo.getPosition()).getBlock() == Additions.strawBlock) {
+		if(chocobo.world.getWorldTime() % 40 == 0 && chocobo.getHealth() != chocobo.getMaxHealth())
+			if(chocobo.world.getBlockState(chocobo.getPosition()).getBlock() == Additions.strawBlock) {
 			return true;
 		}
 		return false;

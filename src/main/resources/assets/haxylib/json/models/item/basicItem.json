@@ -1,5 +1,5 @@
 {
-  "parent": "%modid%:item/baseItem",
+  "parent": "%modid%:item/baseitem",
   "textures": {
     "layer0": "%modid%:%texfolder%/%name%"
   }

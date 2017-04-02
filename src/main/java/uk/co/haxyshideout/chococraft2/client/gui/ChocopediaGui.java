@@ -9,7 +9,11 @@ import uk.co.haxyshideout.chococraft2.network.PacketRegistry;
 import uk.co.haxyshideout.chococraft2.network.side.server.ChocopediaEditPacket;
 import uk.co.haxyshideout.chococraft2.network.side.server.DropGearPacket;
 
+import java.awt.Cursor;
 import java.io.IOException;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
 
 /**
  * Created by clienthax on 4/5/2015.
@@ -35,7 +39,8 @@ public class ChocopediaGui extends GuiScreen {
 
 	public ChocopediaGui(EntityChocobo chocobo) {
 		this.chocobo = chocobo;
-		owner = Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+		// <3 owner = Minecraft.getMinecraft().thePlayer.getName();
+		owner = Minecraft.getMinecraft().player.getName();
 		name = chocobo.getCustomNameTag();
 		movementType = chocobo.getMovementType();
 	}
@@ -45,8 +50,10 @@ public class ChocopediaGui extends GuiScreen {
 	 * window resizes, the buttonList is cleared beforehand.
 	 */
 	@SuppressWarnings({"unchecked", "UnusedAssignment"})
+	// <3 @SuppressWarnings({"unchecked", "UnusedAssignment"})
 	@Override
 	public void initGui() {
+		
 		int componentID = 0;
 		int yPos = 24;
 		int xPos = this.width / 2 - 100;
@@ -58,16 +65,26 @@ public class ChocopediaGui extends GuiScreen {
 		inputTextField = new GuiTextField(componentID++, fontRendererObj, xPos, 24, 100, 20);
 		inputTextField.setVisible(false);
 		updateMovementButton();
-
+		//Cursor.getDefaultCursor();
+		//Cursor guicursor = new Cursor(10);
+		
 		buttonList.add(renameButton);
 		buttonList.add(followOwnerButton);
 		buttonList.add(changeOwnerButton);
 		buttonList.add(applyButton);
 		buttonList.add(dropGearButton);
+		
+	/*	try {
+			Mouse.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	@Override
 	public void updateScreen() {
+		//if(Mouse.isCreated())
+		//	System.out.println("Mouse is created.");
 		if(chocobo.isDead)
 			this.mc.displayGuiScreen(null);
 
@@ -146,6 +163,10 @@ public class ChocopediaGui extends GuiScreen {
 			case WANDER:
 				movementType = EntityChocobo.MovementType.STANDSTILL;
 				break;
+		case FOLLOW_LURE:
+			break;
+		default:
+			break;
 		}
 		updateMovementButton();
 	}

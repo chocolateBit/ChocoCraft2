@@ -22,8 +22,8 @@ public class RecipeHandler {
 				"   ",
 				"sls",
 				" f ",
-				's', Items.string,
-				'l', Items.leather,
+				's', Items.STRING,
+				'l', Items.LEATHER,
 				'f', Additions.chocoboFeatherItem
 		);
 
@@ -33,7 +33,7 @@ public class RecipeHandler {
 				" f ",
 				"l l",
 				" l ",
-				'l', Items.leather,
+				'l', Items.LEATHER,
 				'f', Additions.chocoboFeatherItem
 		);
 
@@ -43,10 +43,10 @@ public class RecipeHandler {
 				"sfs",
 				"w w",
 				"sls",
-				's', Items.string,
-				'l', Items.leather,
+				's', Items.STRING,
+				'l', Items.LEATHER,
 				'f', Additions.chocoboFeatherItem,
-				'w', Blocks.wool
+				'w', Blocks.WOOL
 		);
 
 		//Whistle
@@ -55,7 +55,7 @@ public class RecipeHandler {
 				"   ",
 				" g ",
 				" f ",
-				'g', Items.gold_ingot,
+				'g', Items.GOLD_INGOT,
 				'f', Additions.chocoboFeatherItem
 		);
 
@@ -65,34 +65,34 @@ public class RecipeHandler {
 				"bgb",
 				"ses",
 				"wgw",
-				'b', Items.milk_bucket,
+				'b', Items.MILK_BUCKET,
 				'g', Additions.gysahlGreenItem,
-				's', Items.sugar,
-				'e', Items.egg,
-				'w', Items.wheat
+				's', Items.SUGAR,
+				'e', Items.EGG,
+				'w', Items.WHEAT
 		);
 
 		//Raw Pickles
 		GameRegistry.addShapelessRecipe(
 				new ItemStack(Additions.gysahlRawPicklesItem),
 				Additions.gysahlGreenItem,
-				Items.sugar
+				Items.SUGAR
 		);
 
 		//Straw
 		GameRegistry.addShapelessRecipe(
 				new ItemStack(Additions.strawBlock, 4),
-				new ItemStack(Items.wheat, 2)
+				new ItemStack(Items.WHEAT, 2)
 		);
 
 		//Alternative arrow recipe
 		GameRegistry.addShapedRecipe(
-				new ItemStack(Items.arrow, 4),
+				new ItemStack(Items.ARROW, 4),
 				"f  ",
 				"s  ",
 				"c  ",
-				'f', Items.flint,
-				's', Items.stick,
+				'f', Items.FLINT,
+				's', Items.STICK,
 				'c', Additions.chocoboFeatherItem
 		);
 
@@ -103,10 +103,10 @@ public class RecipeHandler {
 				"ibi",
 				"flf",
 				'f', Additions.chocoboFeatherItem,
-				'n', Items.gold_nugget,
-				'i', new ItemStack(Items.dye, 1, 0),
-				'b', Items.book,
-				'l', new ItemStack(Items.dye, 1, 4)
+				'n', Items.GOLD_NUGGET,
+				'i', new ItemStack(Items.DYE, 1, 0),
+				'b', Items.BOOK,
+				'l', new ItemStack(Items.DYE, 1, 4)
 		);
 
 		//Chocobo disguise

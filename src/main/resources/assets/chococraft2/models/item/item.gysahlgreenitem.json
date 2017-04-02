@@ -1,0 +1,6 @@
+{
+  "parent": "chococraft2:item/baseitem",
+  "textures": {
+    "layer0": "chococraft2:%texfolder%/item.gysahlgreenitem"
+  }
+}

@@ -34,13 +34,13 @@ public class InventoryHelper {
 			return;
 		}
 
-		EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, stack);
-		player.worldObj.spawnEntityInWorld(entityItem);
+		EntityItem entityItem = new EntityItem(player.world, player.posX, player.posY, player.posZ, stack);
+		player.world.spawnEntity(entityItem);
 	}
 
 	public static void dropStack(ItemStack stack, World world, double x, double y, double z) {
 		EntityItem entityItem = new EntityItem(world, x, y, z, stack);
-		world.spawnEntityInWorld(entityItem);
+		world.spawnEntity(entityItem);
 	}
 
 }

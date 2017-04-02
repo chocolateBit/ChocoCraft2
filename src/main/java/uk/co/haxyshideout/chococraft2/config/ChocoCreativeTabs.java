@@ -2,6 +2,7 @@ package uk.co.haxyshideout.chococraft2.config;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -10,12 +11,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class ChocoCreativeTabs {
 
-    public static final CreativeTabs chococraft2 = new CreativeTabs("Chococraft2") {
+    public static final CreativeTabs chococraft2 = new CreativeTabs("chococraft2") {
 
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return Additions.gysahlGreenItem;
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Additions.gysahlGreenItem);
         }
     };
 }

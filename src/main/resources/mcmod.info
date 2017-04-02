@@ -6,10 +6,10 @@
   "version": "0.0.2",
   "credits": "The MinecraftForge Community.",
   "logoFile": "chococraft_icon.png",
-  "mcversion": "1.8",
+  "mcversion": "1.11.2",
   "url": "http://www.minecraftforum.net/topic/1119809-",
   "updateUrl": "",
-  "authors": ["Clienthax", "HassanS6000"],
+  "authors": ["Clienthax", "HassanS6000", "ChocolateBit"],
   "parent": "",
   "screenshots": [],
   "dependencies": [

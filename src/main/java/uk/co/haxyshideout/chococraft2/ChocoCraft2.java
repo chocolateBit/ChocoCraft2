@@ -16,6 +16,7 @@ import uk.co.haxyshideout.chococraft2.config.RecipeHandler;
 import uk.co.haxyshideout.chococraft2.events.EventHandler;
 import uk.co.haxyshideout.chococraft2.network.PacketRegistry;
 import uk.co.haxyshideout.chococraft2.proxies.ServerProxy;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 
 /**
  * Created by clienthax on 12/4/2015.
@@ -59,20 +60,23 @@ public class ChocoCraft2 {
 
 	@Mod.EventHandler
 	public void onPreInit(FMLPreInitializationEvent event) {
-		Additions.registerAdditions();
+	//	Additions.registerAdditions();
 		proxy.registerEntities();
-		proxy.registerRenderers();
+		proxy.preInit();
+		proxy.registerSounds();
 		proxy.registerWorldGenerators();
 		RecipeHandler.registerRecipies();
 		PacketRegistry.registerPackets();
 	}
 
+	@SuppressWarnings("deprecation") // <3
 	@Mod.EventHandler
 	public void onInit(FMLInitializationEvent event) {
 		EventHandler eventHandler = new EventHandler();
 		MinecraftForge.EVENT_BUS.register(eventHandler);
 		FMLCommonHandler.instance().bus().register(eventHandler);
 		proxy.registerEntities();
+		proxy.init();
 	}
 
 	@Mod.EventHandler
